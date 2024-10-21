@@ -7,6 +7,7 @@ export const dbResponseHandler = (
   userData: userDataResponseType | null | boolean,
   res: ServerResponse,
   isDeleted = false,
+  statusCode?: StatusCodeEnum,
 ) => {
   if (isDeleted) {
     responseHandler(
@@ -24,6 +25,10 @@ export const dbResponseHandler = (
       'There is no user with such id',
     );
   } else {
-    responseHandler(res, StatusCodeEnum.OK, JSON.stringify(userData));
+    responseHandler(
+      res,
+      statusCode ?? StatusCodeEnum.OK,
+      JSON.stringify(userData),
+    );
   }
 };
