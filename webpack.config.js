@@ -27,6 +27,8 @@ const config = {
 };
 
 module.exports = () => {
+  console.log(isProduction);
+
   if (isProduction) {
     config.mode = 'production';
   } else {
