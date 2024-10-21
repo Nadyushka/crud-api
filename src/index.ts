@@ -1,9 +1,11 @@
 import { createServer } from 'node:http';
 import { routesHandlers } from './routes/routesHandlers';
 import * as dotenv from 'dotenv';
-// import { startCluster } from './cluster';
-// const args = process.argv.slice(2);
-// const isMultiMode = args.find((arg) => arg.startsWith('--multi-node'));
+import { startCluster } from './cluster';
+
+
+const args = process.argv.slice(2);
+const isMultiMode = args.find((arg) => arg.startsWith('--multi-node'));
 
 dotenv.config();
 
@@ -19,11 +21,8 @@ export const startServer = () => {
   });
 };
 
-startServer();
-
-/** if (!isMultiMode) {
+if (!isMultiMode) {
   startServer();
 } else {
   startCluster();
 }
- */
