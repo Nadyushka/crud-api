@@ -8,8 +8,9 @@
 	},
 	"scripts": {
 		"start:dev": "nodemon",
-		"start:prod": "webpack index.ts --mode=production --node-env=production && node build/bundle.js",
+		"start:prod": "npm run build && node build/bundle.js",
 		"start:multi": "nodemon -- --multi-node",
+		"build": "webpack --mode=production --node-env=production",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"test": "jest"

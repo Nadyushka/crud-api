@@ -2,14 +2,15 @@ import cluster from 'node:cluster';
 import os from 'node:os';
 import http from 'node:http';
 import { startServer } from './index';
+import * as process from "node:process";
 
+const PORT = process.env.PORT ?? 4000;
 const numCPUs = os.cpus().length;
 
 export const startCluster = () => {
   if (cluster.isMaster) {
     console.log(`Master ${process.pid} is running`);
 
-    // Создание рабочих процессов
     for (let i = 0; i < numCPUs; i++) {
       cluster.fork();
     }
@@ -25,7 +26,7 @@ export const startCluster = () => {
 
 const loadBalancer = http.createServer((req, res) => {
   const workerId = Math.floor(Math.random() * numCPUs);
-  const workerPort = 6000 + workerId;
+  const workerPort = +PORT + workerId;
 
   console.log(
     `Incoming request: ${req.method} ${req.url} -> Redirecting to Worker on port ${workerPort}`,
@@ -54,6 +55,6 @@ const loadBalancer = http.createServer((req, res) => {
   });
 });
 
-loadBalancer.listen(5000, () => {
+loadBalancer.listen(PORT, () => {
   console.log(`Load balancer listening on port 5000`);
 });
