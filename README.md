@@ -1,106 +1,114 @@
-# Basic testing
+# CRUD API
 
-⚠️ DO NOT SUBMIT PULL REQUESTS TO THIS REPO ⚠️
-
----
-
-### Prerequisites
-1. Install [Node.js](https://nodejs.org/en/download/)   
-2. Fork this repository: https://github.com/AlreadyBored/basic-testing
-3. Clone your newly created repo locally: https://github.com/<%your_github_username%>/basic-testing/  
-4. Go to folder `basic-testing`  
-5. To install all dependencies use [`npm install`](https://docs.npmjs.com/cli/install)  
-6. Run **test scripts** in command line.
-7. You will see the number of skipped, passing and failing tests.
-
----
-
-### Test scripts
+## Install the application
 
 ```bash
-# run unit tests
-$ npm run test
+git clone https://github.com/Nadyushka/crud-api.git
+git checkout dev
 
-# with logging
-$ npm run test:verbose
+npm i
 ```
 
----
+## Run the application
 
-#### Notes
-1. We recommend you to use Node.js of version 20.x.x LTS. If you use any of features, that does not supported by Node.js 20, there may be problems with task submit.
-2. Please, be sure that each of your tests is limited to 30 sec.
+There 3 ways to run the application:
 
----
+1. Run the application in dev mode:
 
-## General task description
-Your task is to write unit tests for code, provided in file `index.ts`. 
+   ```bash
+   npm run start:dev
+   ```
 
----
+2. Run the application in prod mode:
 
-### **Simple tests**
+   ```bash
+   npm run start:prod
+   ```
 
-Write unit tests for the `simpleCalculator` function, which performs basic mathematical operations - addition, subtraction, division, multiplication, and exponentiation. Your task is to verify that the operations are executed correctly and that the function returns `null` for invalid input.
+3. Run the application in a multi-node `Cluster` environment:
 
-Write your tests in `src/01-simple-tests/index.test.ts`.
+    ```bash
+    npm run start:multi
+    ```
 
----
+## Test the application
 
-### **Table tests**
+```bash
+npm run test
+```
 
-Your task is to rewrite the tests written in the previous task using the table-driven testing approach, utilizing the appropriate Jest API.
+## Lint the application
 
-Write your tests in `src/02-table-tests/index.test.ts`.
+```bash
+npm run lint
+```
 
----
+This command will run the application linter using `eslint` package.
 
+```bash
+npm run lint:fix
+```
 
-### **Error handling & async**
+This command will run the application linter using `eslint` package and fix all fixable issues.
 
-Your task is to test functions that work asynchronously/throw/reject exceptions..
+---------
 
-Write your tests in `src/03-error-handling-async/index.test.ts`.
+## Description of the task
 
----
+Your task is to implement simple CRUD API using in-memory database underneath.
 
-### **Testing class**
+## Technical requirements
 
-Your task is to test a class representing a bank account that implements corresponding operations. Please note that some methods of the class invoke others, some operations result in errors, and the implementation is asynchronous and involves the native JS API. These aspects should be taken into account when writing the tests.
+- Task can be implemented on Javascript or Typescript
+- Only `nodemon`, `dotenv`, `cross-env`, `typescript`, `ts-node`, `eslint` and its plugins, `webpack-cli`, `webpack` and its plugins, `prettier`, `uuid`, `@types/*` as well as libraries used for testing are allowed
+- Use 18 LTS version of Node.js
+- Prefer asynchronous API whenever possible
 
-Write your tests in `src/04-test-class/index.test.ts`.
+## Implementation details
 
----
-
-### **Partial mocking**
-
-Your task is to utilize the Jest API to partially mock the contents of a module.
-
-Write your tests in `src/05-partial-mocking/index.test.ts`.
-
----
-
-### **Mocking Node.js API**
-
-Your task is to test the proper usage of the Node.js API based on commonly used APIs such as the `fs` module, as well as `setTimeout` and `setInterval`. Remember that the tests should not interact with the actual file system and should not rely on real-time!
-
-Write your tests in `src/06-mocking-node-api/index.test.ts`.
-
----
-
-### **Mocking library API**
-
-Your task is to test that function that utilize library APIs is working correctly (with commonly used libraries such as `axios` and `lodash` as examples).
-
-Write your tests in `src/07-mocking-lib-api/index.test.ts`.
-
----
-
-### **Snapshot testing**
-
-Your task is to use snapshot testing with Jest and compare it to regular comparison testing.
-
-Write your tests in `src/08-snapshot-testing/index.test.ts`.
-
----
-
-© [AlreadyBored](https://github.com/AlreadyBored)
+1. Implemented endpoint `api/users`:
+    - **GET** `api/users` is used to get all persons
+        - Server should answer with `status code` **200** and all users records
+    - **GET** `api/users/${userId}`
+        - Server should answer with `status code` **200** and and record with `id === userId` if it exists
+        - Server should answer with `status code` **400** and corresponding message if `userId` is invalid (not `uuid`)
+        - Server should answer with `status code` **404** and corresponding message if record with `id === userId` doesn't exist
+    - **POST** `api/users` is used to create record about new user and store it in database
+        - Server should answer with `status code` **201** and newly created record
+        - Server should answer with `status code` **400** and corresponding message if request `body` does not contain **required** fields
+    - **PUT** `api/users/{userId}` is used to update existing user
+        - Server should answer with` status code` **200** and updated record
+        - Server should answer with` status code` **400** and corresponding message if `userId` is invalid (not `uuid`)
+        - Server should answer with` status cokde` **404** and corresponding message if record with `id === userId` doesn't exist
+    - **DELETE** `api/users/${userId}` is used to delete existing user from database
+        - Server should answer with `status code` **204** if the record is found and deleted
+        - Server should answer with `status code` **400** and corresponding message if `userId` is invalid (not `uuid`)
+        - Server should answer with `status code` **404** and corresponding message if record with `id === userId` doesn't exist
+2. Users are stored as `objects` that have following properties:
+    - `id` — unique identifier (`string`, `uuid`) generated on server side
+    - `username` — user's name (`string`, **required**)
+    - `age` — user's age (`number`, **required**)
+    - `hobbies` — user's hobbies (`array` of `strings` or empty `array`, **required**)
+3. Requests to non-existing endpoints (e.g. `some-non/existing/resource`) should be handled (server should answer with `status code` **404** and corresponding human-friendly message)
+4. Errors on the server side that occur during the processing of a request should be handled and processed correctly (server should answer with `status code` **500** and corresponding human-friendly message)
+5. Value of `port` on which application is running should be stored in `.env` file
+6. There should be 2 modes of running application (**development** and **production**):
+    - The application is run in development mode using `nodemon` (there is a `npm` script `start:dev`)
+    - The application is run in production mode (there is a `npm` script `start:prod` that starts the build process and then runs the bundled file)
+7. There could be some tests for API (not less than **3** scenarios). Example of test scenario:
+    1. Get all records with a `GET` `api/users` request (an empty array is expected)
+    2. A new object is created by a `POST` `api/users` request (a response containing newly created record is expected)
+    3. With a `GET` `api/user/{userId}` request, we try to get the created  record by its `id` (the created record is expected)
+    4. We try to update the created record with a `PUT` `api/users/{userId}`request (a response is expected containing an updated object with the same `id`)
+    5. With a `DELETE` `api/users/{userId}` request, we delete the created object by `id` (confirmation of successful deletion is expected)
+    6. With a `GET` `api/users/{userId}` request, we are trying to get a deleted object by `id` (expected answer is that there is no such object)
+8. There could be implemented horizontal scaling for application (there is a `npm` script `start:multi` that starts multiple instances of your application using the Node.js `Cluster` API (equal to the number of logical processor cores on the host machine, each listening on port PORT + n) with a **load balancer** that distributes requests across them (using Round-robin algorithm). For example: host machine has 4 cores, `PORT` is 4000. On run `npm run start:multi` it works following way
+- On `localhost:4000/api` load balancer is listening for requests
+- On `localhost:4001/api`, `localhost:4002/api`, `localhost:4003/api`, `localhost:4004/api` workers are listening for requests from load balancer
+- When user sends request to `localhost:4000/api`, load balancer sends this request to `localhost:4001/api`, next user request is sent to `localhost:4002/api` and so on.
+- After sending request to `localhost:4004/api` load balancer starts from the first worker again (sends request to `localhost:4001/api`)
+- State of db should be consistent between different workers, for example:
+    1. First `POST` request addressed to `localhost:4001/api` creates user
+    2. Second `GET` request addressed to `localhost:4002/api` should return created user
+    3. Third `DELETE` request addressed to `localhost:4003/api` deletes created user
+    4. Fourth `GET` request addressed to `localhost:4004/api` should return **404** status code for created user
