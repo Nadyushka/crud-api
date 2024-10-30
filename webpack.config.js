@@ -3,7 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const config = {
+module.exports = {
   entry: './src/index.ts',
   output: {
     filename: 'bundle.js',
@@ -24,15 +24,5 @@ const config = {
     extensions: ['.ts'],
   },
   target: 'node',
-};
-
-module.exports = () => {
-  console.log(isProduction);
-
-  if (isProduction) {
-    config.mode = 'production';
-  } else {
-    config.mode = 'development';
-  }
-  return config;
+  mode: isProduction ? 'production' : 'development',
 };

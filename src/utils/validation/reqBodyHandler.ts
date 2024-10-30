@@ -1,6 +1,4 @@
-import {
-  userDataRequestType,
-} from '../../constants/types';
+import { userDataRequestType } from '../../constants/types';
 
 import { IncomingMessage } from 'node:http';
 import { reqBodyValidation } from './reqBodyValidation';

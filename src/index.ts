@@ -3,11 +3,10 @@ import { routesHandlers } from './routes/routesHandlers';
 import * as dotenv from 'dotenv';
 import { startCluster } from './cluster';
 
+dotenv.config();
 
 const args = process.argv.slice(2);
 const isMultiMode = args.find((arg) => arg.startsWith('--multi-node'));
-
-dotenv.config();
 
 const PORT = process.env.PORT;
 
