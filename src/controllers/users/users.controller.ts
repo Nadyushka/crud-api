@@ -1,8 +1,14 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { responseHandler } from '../../utils/responseHandler';
 import { MethodEnum, StatusCodeEnum } from '../../constants/enum';
-import { createUser, deleteUser, getAllUsers, getUser, updateUser } from "../../services/users/users.service";
-import { idType } from "../../constants/types";
+import {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+} from '../../services/users/users.service';
+import { idType } from '../../constants/types';
 
 export const userController = async (
   req: IncomingMessage,

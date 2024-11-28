@@ -16,6 +16,7 @@ export const routesHandlers = async (
       await userController(req, res, urlParams.slice(1));
       break;
     }
+
     default: {
       responseHandler(res, StatusCodeEnum.NOT_FOUND, 'There is no such url');
     }

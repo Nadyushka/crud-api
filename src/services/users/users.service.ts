@@ -34,7 +34,7 @@ export const createUser = async (
     const checkUserData = await reqBodyHandler(req);
     const userData = usersDB.createUser(checkUserData);
 
-    dbResponseHandler(userData, res);
+    dbResponseHandler(userData, res, false, StatusCodeEnum.CREATED);
   } catch (e) {
     const message = e as string;
     responseHandler(res, StatusCodeEnum.BAD_REQUEST, message);
